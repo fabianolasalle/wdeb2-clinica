@@ -28,7 +28,7 @@ public class ContatoDao {
     }
 
     public void adiciona(Contato contato) throws ClassNotFoundException {
-        this.connection = new ConnectionFactory().getConnection();
+        this.connection = new ConnectionSingleton().getConnection();
         String sql = "insert into contatos "
                 + "(nome,email,endereco,dataNascimento )"
                 + " values (?,?,?,?)";
@@ -52,7 +52,7 @@ public class ContatoDao {
 
     public List<Contato> getLista() throws ClassNotFoundException {
 
-        this.connection = new ConnectionFactory().getConnection();
+        this.connection = new ConnectionSingleton().getConnection();
         String sql = "select	*	from	contatos";
         try {
             // prepared statement para inserção
@@ -79,7 +79,7 @@ public class ContatoDao {
     }
 
     public void altera(Contato contato) throws ClassNotFoundException {
-       this.connection = new ConnectionFactory().getConnection();
+       this.connection = new ConnectionSingleton().getConnection();
         String sql = "update	contatos	set	nome=?,	email=?,"
                 + "endereco=?	where	id=?";
         try {
@@ -97,7 +97,7 @@ public class ContatoDao {
 
     public void remove(Contato contato) throws ClassNotFoundException, SQLException {
 
-        this.connection = new ConnectionFactory().getConnection();
+        this.connection = new ConnectionSingleton().getConnection();
         String sql = "delete	from	contatos where	id=?";
         PreparedStatement stmt = connection.prepareStatement(sql);
                 stmt.setLong(1, contato.getId());
