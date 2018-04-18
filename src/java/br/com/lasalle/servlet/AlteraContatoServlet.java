@@ -54,7 +54,7 @@ public class AlteraContatoServlet extends HttpServlet {
             Logger.getLogger(AlteraContatoServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-         RequestDispatcher r = request.getRequestDispatcher("./FrmContato.jsp");
+        RequestDispatcher r = request.getRequestDispatcher("./FrmContato.jsp");
         r.forward(request, response);
   
 
