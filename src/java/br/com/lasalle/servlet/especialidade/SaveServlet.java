@@ -10,8 +10,6 @@ import br.com.lasalle.jdbc.EspecialidadeDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
@@ -25,8 +23,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author fabiano
  */
-@WebServlet("/especialidade")
-public class ListServlet extends HttpServlet {
+@WebServlet("/especialidade-save")
+public class SaveServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,7 +37,7 @@ public class ListServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        
         RequestDispatcher dispatcher = request.getRequestDispatcher("./views/index.jsp");
         dispatcher.forward(request, response);
     }
@@ -57,19 +55,21 @@ public class ListServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        List<Especialidade> data = new ArrayList<Especialidade>();
+        String id = request.getParameter("id");
+        Especialidade data = null;
+        EspecialidadeDAO dao;
+        
         try {
-            // TODO: Adicionar DAO e obter listagem da base
-            EspecialidadeDAO dao = new EspecialidadeDAO();
-            data = dao.getAll();
+            dao = new EspecialidadeDAO();
+            data = dao.getSingle(Integer.parseInt(id));
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(ListServlet.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SaveServlet.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
-            Logger.getLogger(ListServlet.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SaveServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        request.setAttribute("listData", data);
-        request.setAttribute("contentPath", "./especialidade/list.jsp");
+        request.setAttribute("data", data);
+        request.setAttribute("contentPath", "./especialidade/save.jsp");
         processRequest(request, response);
     }
 
@@ -84,6 +84,34 @@ public class ListServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
+        EspecialidadeDAO dao = null;
+        try {
+            dao = new EspecialidadeDAO();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(SaveServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
+                
+        String id = request.getParameter("id");
+        boolean resultOperation = false;
+        if (null == id) {
+            // TODO: Inserto
+        } else {           
+            Especialidade especialidade = null;
+            try {
+                especialidade = dao.getSingle(Integer.parseInt(id));
+                especialidade.setDescricao(request.getParameter("descricao"));
+                resultOperation = dao.update(especialidade);
+            } catch (SQLException ex) {
+                Logger.getLogger(SaveServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } 
+        
+        if (resultOperation) {
+            response.sendRedirect("especialidade");
+            return;
+        }
+        
         processRequest(request, response);
     }
 

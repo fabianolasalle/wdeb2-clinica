@@ -19,4 +19,9 @@ public class DefaultDAO {
         ConnectionSingleton conn = new ConnectionSingleton();
         this.connection = conn.getConnection();
     }
+
+    public Connection getConnection() {
+        return connection;
+    }
+   
 }

@@ -12,7 +12,7 @@
         <a class="nav-link" href="#"> Clientes </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#"> Especialidades </a>
+        <a class="nav-link" href="especialidade"> Especialidades </a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="#"> Médico </a>
