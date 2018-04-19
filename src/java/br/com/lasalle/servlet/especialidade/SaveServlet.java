@@ -59,13 +59,15 @@ public class SaveServlet extends HttpServlet {
         Especialidade data = null;
         EspecialidadeDAO dao;
         
-        try {
-            dao = new EspecialidadeDAO();
-            data = dao.getSingle(Integer.parseInt(id));
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(SaveServlet.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
-            Logger.getLogger(SaveServlet.class.getName()).log(Level.SEVERE, null, ex);
+        if (null != id){
+            try {
+                dao = new EspecialidadeDAO();
+                data = dao.getSingle(Integer.parseInt(id));
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(SaveServlet.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (SQLException ex) {
+                Logger.getLogger(SaveServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         
         request.setAttribute("data", data);
@@ -94,8 +96,16 @@ public class SaveServlet extends HttpServlet {
                 
         String id = request.getParameter("id");
         boolean resultOperation = false;
-        if (null == id) {
-            // TODO: Inserto
+        if (id.length() < 1) {
+            // TODO: Insert
+            Especialidade especialidade = new Especialidade();
+            especialidade.setDescricao(request.getParameter("descricao"));
+            try {
+                resultOperation = dao.insert(especialidade);
+            } catch (SQLException ex) {
+                Logger.getLogger(SaveServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
         } else {           
             Especialidade especialidade = null;
             try {

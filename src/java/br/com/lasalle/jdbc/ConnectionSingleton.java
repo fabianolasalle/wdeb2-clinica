@@ -21,7 +21,7 @@ public class ConnectionSingleton {
         try {
             if (null == this.connection) {
                 Class.forName("com.mysql.jdbc.Driver"); 
-                this.connection = DriverManager.getConnection("jdbc:mysql://localhost/webdevt1", "root", "123456");
+                this.connection = DriverManager.getConnection("jdbc:mysql://localhost/webdevt1?characterEncoding=utf8", "root", "123456");
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);

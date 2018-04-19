@@ -71,9 +71,9 @@ public class EspecialidadeDAO extends DefaultDAO {
         String sql = "INSERT INTO especialidade (descricao) VALUES (?)";
         PreparedStatement stmt = this.getConnection().prepareStatement(sql);
         stmt.setString(1, especialidade.getDescricao());
-        boolean result = stmt.execute();
+        int result = stmt.executeUpdate();
         stmt.close();
         
-        return result;
+        return result == 1;
     }
 }
