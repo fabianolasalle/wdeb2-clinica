@@ -76,4 +76,15 @@ public class EspecialidadeDAO extends DefaultDAO {
         
         return result == 1;
     }
+    
+    public boolean remove(int id) throws SQLException
+    {
+        String sql = "DELETE FROM especialidade WHERE id = ?";
+        PreparedStatement stmt = this.getConnection().prepareStatement(sql);
+        stmt.setInt(1, id);
+        int result = stmt.executeUpdate();
+        stmt.close();
+        
+        return result == 1;
+    }
 }
