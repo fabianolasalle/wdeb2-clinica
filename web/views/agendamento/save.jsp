@@ -43,7 +43,7 @@
               
             <div class="form-group">
               <label for="nome">Data Consulta</label>
-              <input type="text" class="form-control" name="data_consulta" id="data_consulta" placeholder="dd/mm/yyyy hh:mi " value="<%= (null == agendamento) ? "" : agendamento.getDataConsulta()%>">
+              <input type="text" class="form-control" name="data_consulta" id="data_consulta" placeholder="dd/mm/yyyy hh:mi " value="<%= (null == agendamento) ? "" : agendamento.getDataConsultaHtml()%>">
             </div>
 
             <input type="hidden" name="id" value="<%= (null == agendamento) ? "" : agendamento.getId()%>">            

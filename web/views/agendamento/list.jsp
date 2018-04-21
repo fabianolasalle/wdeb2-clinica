@@ -25,7 +25,7 @@
                     <td><%=agendamento.getId()%></td>
                     <td><%=agendamento.getCliente().getPessoa().getNome()%></td>
                     <td><%=agendamento.getMedico().getPessoa().getNome()%></td>
-                    <td><%=agendamento.getDataConsulta()%></td>
+                    <td><%=agendamento.getDataConsultaHtml()%></td>
                     <td>
                         <a href="agendamento-save?id=<%=agendamento.getId()%>"><button class="btn btn-sm btn-primary"><i class="fas fa-edit"></i></button></a>
                         <a href="agendamento-remove?id=<%=agendamento.getId()%>"><button class="btn btn-sm btn-danger"><i class="fas fa-times"></i></button></a>

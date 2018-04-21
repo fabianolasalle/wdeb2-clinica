@@ -49,7 +49,7 @@ public class Agendamento implements ICrudEntity {
     public void mapRequest(HttpServletRequest request) {
         Date date = null;
         try {
-            date = new SimpleDateFormat("dd/MM/yyyyy HH:mm").parse(request.getParameter("data_consulta"));
+            date = new SimpleDateFormat("dd/MM/yyyy HH:mm").parse(request.getParameter("data_consulta"));
         } catch (ParseException ex) {
             Logger.getLogger(Agendamento.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -59,6 +59,12 @@ public class Agendamento implements ICrudEntity {
         this.idCliente = Long.parseLong(request.getParameter("id_cliente"));
         this.idMedico = Long.parseLong(request.getParameter("id_medico"));
         this.dataConsulta = timestamp;
+    }
+    
+    public String getDataConsultaHtml()
+    {
+        Date date = new Date(this.getDataConsulta().getTime());
+        return new SimpleDateFormat("dd/MM/yyyy HH:mm").format(date);
     }
 
     public long getId() {

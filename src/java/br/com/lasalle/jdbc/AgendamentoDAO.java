@@ -76,13 +76,14 @@ public class AgendamentoDAO extends DefaultDAO {
         String sql = "UPDATE " + this.tablename + " SET "
                 + "id_cliente = ?, "
                 + "id_medico= ?, "
-                + "data_consutla = ? "
+                + "data_consulta = ? "
                 + "WHERE id = ?";
         
         PreparedStatement stmt = this.getConnection().prepareStatement(sql);
         stmt.setLong(1, agendamento.getIdCliente());
         stmt.setLong(2, agendamento.getIdMedico());
         stmt.setTimestamp(3, agendamento.getDataConsulta());
+        stmt.setLong(4, agendamento.getId());
         
         int result = stmt.executeUpdate();
         stmt.close();
