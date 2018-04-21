@@ -9,16 +9,13 @@
         <a class="nav-link" href="#"> Contatos </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#"> Clientes </a>
+        <a class="nav-link" href="http://localhost:8080/WebApplication1/cliente"> Clientes </a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="http://localhost:8080/WebApplication1/especialidade"> Especialidades </a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="http://localhost:8080/WebApplication1/medico"> Médico </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#"> Pessoas </a>
       </li>
     </ul>
   </div>

@@ -19,12 +19,10 @@ import javax.servlet.http.HttpServletRequest;
 public class Medico {
     public Long id;
     public Long idPessoa;
-    public String cpf;
     public String crm;
     public Long idEspecialidade;
     public String horarioInicial;
     public String horarioFinal;
-    public String rg;
     public Pessoa pessoa;
     public Especialidade especialidade;
 
@@ -48,12 +46,10 @@ public class Medico {
     {
         this.id = rs.getLong("id");
         this.idPessoa = rs.getLong("id_pessoa");
-        this.cpf = rs.getString("cpf");
         this.crm = rs.getString("crm");
         this.idEspecialidade = rs.getLong("id_especialidade");
         this.horarioInicial = rs.getString("horario_inicial");
         this.horarioFinal = rs.getString("horario_inicial");
-        this.rg = rs.getString("rg");
     }
     
     public Medico(HttpServletRequest request)
@@ -68,12 +64,10 @@ public class Medico {
     
     public void mapRequest(HttpServletRequest request)
     {
-        this.cpf = request.getParameter("cpf");
         this.crm = request.getParameter("crm");
         this.idEspecialidade = Long.parseLong(request.getParameter("id_especialidade"));
         this.horarioInicial = request.getParameter("horario_inicial");
         this.horarioFinal = request.getParameter("horario_final");
-        this.rg = request.getParameter("rg");
     }
         
     public Long getId() {
@@ -90,14 +84,6 @@ public class Medico {
 
     public void setIdPessoa(Long idPessoa) {
         this.idPessoa = idPessoa;
-    }
-
-    public String getCpf() {
-        return cpf;
-    }
-
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
     }
 
     public String getCrm() {
@@ -144,15 +130,5 @@ public class Medico {
 
     public void setHorarioFinal(String horarioFinal) {
         this.horarioFinal = horarioFinal;
-    }
-
-    public String getRg() {
-        return rg;
-    }
-
-    public void setRg(String rg) {
-        this.rg = rg;
-    }
-    
-    
+    }    
 }

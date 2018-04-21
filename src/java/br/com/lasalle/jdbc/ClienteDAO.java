@@ -18,11 +18,11 @@ import java.util.List;
  *
  * @author fabiano
  */
-public class PessoaDAO extends DefaultDAO {
+public class ClienteDAO extends DefaultDAO {
     
-    public String tablename = "pessoa";
+    public String tablename = "cliente";
     
-    public PessoaDAO() throws ClassNotFoundException{
+    public ClienteDAO() throws ClassNotFoundException{
         super();
     }
     
@@ -64,18 +64,14 @@ public class PessoaDAO extends DefaultDAO {
                 + "nome = ?, "
                 + "telefone = ?, "
                 + "endereco = ?, "
-                + "email = ?, "
-                + "cpf = ?, "
-                + "rg = ?, "
+                + "email = ? "
                 + "WHERE id = ?";
         PreparedStatement stmt = this.getConnection().prepareStatement(sql);
         stmt.setString(1, pessoa.getNome());
         stmt.setString(2, pessoa.getTelefone());
         stmt.setString(3, pessoa.getEndereco());
         stmt.setString(4, pessoa.getEmail());
-        stmt.setString(5, pessoa.getCpf());
-        stmt.setString(6, pessoa.getRg());
-        stmt.setLong(7, pessoa.getId());
+        stmt.setLong(5, pessoa.getId());
         
         int result = stmt.executeUpdate();
         stmt.close();
@@ -85,17 +81,13 @@ public class PessoaDAO extends DefaultDAO {
     
     public long insert(Pessoa pessoa) throws SQLException
     {
-        String sql = "INSERT INTO " + this.tablename + " (nome, telefone, endereco, email, cpf, rg) "
-                + "VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO " + this.tablename + " (nome, telefone, endereco, email) "
+                + "VALUES (?, ?, ?, ?)";
         PreparedStatement stmt = this.getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
         stmt.setString(1, pessoa.getNome());
         stmt.setString(2, pessoa.getTelefone());
         stmt.setString(3, pessoa.getEndereco());
         stmt.setString(4, pessoa.getEmail());
-        stmt.setString(5, pessoa.getCpf());
-        stmt.setString(6, pessoa.getRg());
-        
-        int result = stmt.executeUpdate();
         
         long insertedIdResult = 0l;
         ResultSet rs = stmt.getGeneratedKeys();

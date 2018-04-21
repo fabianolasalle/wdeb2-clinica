@@ -73,21 +73,18 @@ public class MedicoDAO extends DefaultDAO {
     public boolean update(Medico medico) throws SQLException
     {
         String sql = "UPDATE " + this.tablename + " SET "
-                + "cpf = ?, "
                 + "crm = ?, "
                 + "id_especialidade = ?, "
                 + "horario_inicial = ?, "
-                + "horario_final = ?, "
-                + "rg = ? "
+                + "horario_final = ? "
                 + "WHERE id = ?";
         PreparedStatement stmt = this.getConnection().prepareStatement(sql);
-        stmt.setString(1, medico.getCpf());
-        stmt.setString(2, medico.getCrm());
-        stmt.setLong(3, medico.getIdEspecialidade());
-        stmt.setString(4, medico.getHorarioInicial());
-        stmt.setString(5, medico.getHorarioFinal());
-        stmt.setString(6, medico.getRg());
-        stmt.setLong(7, medico.getId());
+        stmt.setString(1, medico.getCrm());
+        stmt.setLong(2, medico.getIdEspecialidade());
+        stmt.setString(3, medico.getHorarioInicial());
+        stmt.setString(4, medico.getHorarioFinal());
+        stmt.setLong(5, medico.getId());
+        
         int result = stmt.executeUpdate();
         stmt.close();
         
@@ -96,16 +93,16 @@ public class MedicoDAO extends DefaultDAO {
     
     public long insert(Medico medico) throws SQLException
     {
-        String sql = "INSERT INTO " + this.tablename + " (id_pessoa, cpf, crm, id_especialidade, horario_inicial, horario_final, rg) "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO " + this.tablename + " (id_pessoa, crm, id_especialidade, horario_inicial, horario_final) "
+                + "VALUES (?, ?, ?, ?, ?)";
         PreparedStatement stmt = this.getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
         stmt.setLong(1, medico.getIdPessoa());
-        stmt.setString(2, medico.getCpf());
-        stmt.setString(3, medico.getCrm());
-        stmt.setLong(4, medico.getIdEspecialidade());
-        stmt.setString(5, medico.getHorarioInicial());
-        stmt.setString(6, medico.getHorarioFinal());
-        stmt.setString(7, medico.getRg());
+        stmt.setString(2, medico.getCrm());
+        stmt.setLong(3, medico.getIdEspecialidade());
+        stmt.setString(4, medico.getHorarioInicial());
+        stmt.setString(5, medico.getHorarioFinal());
+        
+        int result = stmt.executeUpdate();
         
         long insertedIdResult = 0l;
         ResultSet rs = stmt.getGeneratedKeys();

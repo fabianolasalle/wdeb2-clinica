@@ -27,7 +27,11 @@
             </div>
             <div class="form-group">
               <label for="cpf">CPF</label>
-              <input type="text" class="form-control" name="cpf" id="cpf" placeholder="CPF" maxlength="11" value="<%= (null == medico) ? "" : medico.getCpf()%>">
+              <input type="text" class="form-control" name="cpf" id="cpf" placeholder="CPF" maxlength="11" value="<%= (null == pessoa) ? "" : pessoa.getCpf()%>">
+            </div>
+            <div class="form-group">
+              <label for="rg">RG</label>
+              <input type="text" class="form-control" name="rg" id="rg" placeholder="RG" maxlength="10" value="<%= (null == pessoa) ? "" : pessoa.getRg()%>">
             </div>
             <div class="form-group">
               <label for="crm">CRM</label>
