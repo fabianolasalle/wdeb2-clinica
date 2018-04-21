@@ -6,19 +6,11 @@
 package br.com.lasalle.servlet.cliente;
 
 import br.com.lasalle.classes.Cliente;
-import br.com.lasalle.servlet.medico.*;
-import br.com.lasalle.servlet.especialidade.*;
-import br.com.lasalle.classes.Especialidade;
-import br.com.lasalle.classes.Medico;
 import br.com.lasalle.classes.Pessoa;
 import br.com.lasalle.jdbc.ClienteDAO;
-import br.com.lasalle.jdbc.EspecialidadeDAO;
-import br.com.lasalle.jdbc.MedicoDAO;
 import br.com.lasalle.jdbc.PessoaDAO;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.SQLException;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;

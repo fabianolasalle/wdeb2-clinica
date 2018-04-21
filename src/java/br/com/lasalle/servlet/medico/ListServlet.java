@@ -5,13 +5,9 @@
  */
 package br.com.lasalle.servlet.medico;
 
-import br.com.lasalle.servlet.especialidade.*;
-import br.com.lasalle.classes.Especialidade;
 import br.com.lasalle.classes.Medico;
-import br.com.lasalle.jdbc.EspecialidadeDAO;
 import br.com.lasalle.jdbc.MedicoDAO;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
