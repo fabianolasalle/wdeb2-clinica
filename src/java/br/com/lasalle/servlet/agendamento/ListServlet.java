@@ -3,13 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.com.lasalle.servlet.medico;
+package br.com.lasalle.servlet.agendamento;
 
+import br.com.lasalle.classes.Agendamento;
+import br.com.lasalle.servlet.medico.*;
 import br.com.lasalle.classes.Medico;
+import br.com.lasalle.jdbc.AgendamentoDAO;
 import br.com.lasalle.jdbc.MedicoDAO;
-import br.com.lasalle.jdbc.PessoaDAO;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
@@ -23,8 +27,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author fabiano
  */
-@WebServlet("/medico-remove")
-public class RemoveServlet extends HttpServlet {
+@WebServlet("/agendamento")
+public class ListServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -54,32 +58,19 @@ public class RemoveServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        PessoaDAO pessoaDao = null;
-        MedicoDAO medicoDao = null;
+        List<Agendamento> data = new ArrayList<Agendamento>();
         try {
-            pessoaDao = new PessoaDAO();
-            medicoDao = new MedicoDAO();
+            // TODO: Adicionar DAO e obter listagem da base
+            AgendamentoDAO agendamentoDao = new AgendamentoDAO();
+            data = agendamentoDao.getAll();
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(SaveServlet.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ListServlet.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(ListServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        String id = request.getParameter("id");
-        boolean resultOperation = false;
-        if (id.length() >= 1) {
-            try {
-                Medico medico = medicoDao.getSingle(Long.parseLong(id));
-                resultOperation = medicoDao.remove(Long.parseLong(id));
-                pessoaDao.remove(medico.getIdPessoa());
-            } catch (SQLException ex) {
-                Logger.getLogger(RemoveServlet.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (ClassNotFoundException ex) {
-                Logger.getLogger(RemoveServlet.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        
-        if (resultOperation) {
-            response.sendRedirect("medico");
-            return;
-        }
+        request.setAttribute("listData", data);
+        request.setAttribute("contentPath", "./agendamento/list.jsp");
+        processRequest(request, response);
     }
 }

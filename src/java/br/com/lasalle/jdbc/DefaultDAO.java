@@ -6,6 +6,10 @@
 package br.com.lasalle.jdbc;
 
 import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.*;
+import br.com.lasalle.classes.ICrudEntity;
 
 /**
  *

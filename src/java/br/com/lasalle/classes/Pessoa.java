@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
  *
  * @author fabiano
  */
-public class Pessoa {
+public class Pessoa implements ICrudEntity {
     public Long id;
     public String nome;
     public String telefone;

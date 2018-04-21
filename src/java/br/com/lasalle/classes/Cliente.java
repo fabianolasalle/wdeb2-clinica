@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
  *
  * @author 201760192
  */
-public class Cliente {
+public class Cliente implements ICrudEntity {
     
     public Long id;
     public Long idPessoa;

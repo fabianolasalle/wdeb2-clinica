@@ -1,3 +1,4 @@
+<%@page import="br.com.lasalle.classes.Agendamento"%>
 <%@page import="java.util.ArrayList"%>
 <% ArrayList<Agendamento> agendamentos = (ArrayList)request.getAttribute("listData"); %>
 <div class="row mb-3">

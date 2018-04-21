@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
  *
  * @author 201760192
  */
-public class Medico {
+public class Medico implements ICrudEntity {
     public Long id;
     public Long idPessoa;
     public String crm;

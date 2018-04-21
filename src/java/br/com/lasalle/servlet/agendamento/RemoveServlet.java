@@ -3,9 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.com.lasalle.servlet.medico;
+package br.com.lasalle.servlet.agendamento;
 
+import br.com.lasalle.servlet.medico.*;
 import br.com.lasalle.classes.Medico;
+import br.com.lasalle.jdbc.AgendamentoDAO;
 import br.com.lasalle.jdbc.MedicoDAO;
 import br.com.lasalle.jdbc.PessoaDAO;
 import java.io.IOException;
@@ -23,7 +25,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author fabiano
  */
-@WebServlet("/medico-remove")
+@WebServlet("/agendamento-remove")
 public class RemoveServlet extends HttpServlet {
 
     /**
@@ -54,11 +56,9 @@ public class RemoveServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        PessoaDAO pessoaDao = null;
-        MedicoDAO medicoDao = null;
+        AgendamentoDAO agendamentoDao = null;
         try {
-            pessoaDao = new PessoaDAO();
-            medicoDao = new MedicoDAO();
+            agendamentoDao = new AgendamentoDAO();
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(SaveServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -67,18 +67,14 @@ public class RemoveServlet extends HttpServlet {
         boolean resultOperation = false;
         if (id.length() >= 1) {
             try {
-                Medico medico = medicoDao.getSingle(Long.parseLong(id));
-                resultOperation = medicoDao.remove(Long.parseLong(id));
-                pessoaDao.remove(medico.getIdPessoa());
+                resultOperation = agendamentoDao.remove(Long.parseLong(id));
             } catch (SQLException ex) {
-                Logger.getLogger(RemoveServlet.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (ClassNotFoundException ex) {
                 Logger.getLogger(RemoveServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         
         if (resultOperation) {
-            response.sendRedirect("medico");
+            response.sendRedirect("agendamento");
             return;
         }
     }

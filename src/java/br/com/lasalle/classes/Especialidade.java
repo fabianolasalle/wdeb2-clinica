@@ -7,12 +7,13 @@ package br.com.lasalle.classes;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  *
  * @author fabiano
  */
-public class Especialidade {
+public class Especialidade implements ICrudEntity {
     public Long id;
     public String descricao;
 
@@ -39,7 +40,10 @@ public class Especialidade {
 
     public void setDescricao(String descricao) {
         this.descricao = descricao;
+    }    
+
+    @Override
+    public void mapRequest(HttpServletRequest request) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
-    
 }

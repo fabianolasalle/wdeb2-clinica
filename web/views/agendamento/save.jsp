@@ -1,69 +1,52 @@
-<%@page import="java.util.ArrayList"%>
-<%@page import="br.com.lasalle.classes.Especialidade"%>
-<%@page import="java.util.List"%>
-<%@page import="br.com.lasalle.classes.Pessoa"%>
+<%@page import="br.com.lasalle.classes.Agendamento"%>
 <%@page import="br.com.lasalle.classes.Medico"%>
-<% Medico medico = (Medico) request.getAttribute("data"); %>
-<% Pessoa pessoa = (Pessoa) request.getAttribute("pessoa-data"); %>
-<% List<Especialidade> especialidades = (ArrayList<Especialidade>) request.getAttribute("especialidade-data"); %>
+<%@page import="br.com.lasalle.classes.Cliente"%>
+<%@page import="java.util.ArrayList"%>
+<% ArrayList<Cliente> clientes = (ArrayList<Cliente>) request.getAttribute("cliente-data"); %>
+<% ArrayList<Medico> medicos = (ArrayList<Medico>) request.getAttribute("medico-data"); %>
+<% Agendamento agendamento = (Agendamento) request.getAttribute("data"); %>
 <div clas="row">
     <div class="col">
-        <form method="POST" action="medico-save">
+        <form method="POST" action="agendamento-save">
             <div class="form-group">
-              <label for="nome">Nome</label>
-              <input type="text" class="form-control" name="nome" id="nome" placeholder="Nome" value="<%= (null == pessoa) ? "" : pessoa.getNome()%>">
-            </div>
-            <div class="form-group">
-              <label for="telefone">Telefone</label>
-              <input type="text" class="form-control" name="telefone" id="telefone" placeholder="Telefone" value="<%= (null == pessoa) ? "" : pessoa.getTelefone()%>">
-            </div>
-            <div class="form-group">
-              <label for="endereco">Endereço</label>
-              <input type="text" class="form-control" name="endereco" id="endereco" placeholder="Endereço" value="<%= (null == pessoa) ? "" : pessoa.getEndereco()%>">
-            </div>
-            <div class="form-group">
-              <label for="email">E-mail</label>
-              <input type="email" class="form-control" name="email" id="email" placeholder="email@dominio.com.br" value="<%= (null == pessoa) ? "" : pessoa.getEmail()%>">
-            </div>
-            <div class="form-group">
-              <label for="cpf">CPF</label>
-              <input type="text" class="form-control" name="cpf" id="cpf" placeholder="CPF" maxlength="11" value="<%= (null == pessoa) ? "" : pessoa.getCpfHtml()%>">
-            </div>
-            <div class="form-group">
-              <label for="rg">RG</label>
-              <input type="text" class="form-control" name="rg" id="rg" placeholder="RG" maxlength="10" value="<%= (null == pessoa) ? "" : pessoa.getRgHtml()%>">
-            </div>
-            <div class="form-group">
-              <label for="crm">CRM</label>
-              <input type="text" class="form-control" name="crm" id="crm" placeholder="CRM" value="<%= (null == medico) ? "" : medico.getCrm()%>">
-            </div>
-            <div class="form-group">
-              <label for="horario_inicio">Horário Inicial</label>
-              <input type="text" class="form-control" name="horario_inicio" id="horario_inicio" placeholder="xx:xx" value="<%= (null == medico) ? "" : medico.getHorarioInicialHtml()%>">
-            </div>
-            <div class="form-group">
-              <label for="horario_fim">Horário Final</label>
-              <input type="text" class="form-control" name="horario_fim" id="horario_fim" placeholder="xx:xx" value="<%= (null == medico) ? "" : medico.getHorarioFinalHtml()%>">
-            </div>
-            <div class="form-group">
-              <label for="horario_fim">Especialidade</label>
-              <select class="form-control" name="id_especialidade" id="id_especialidade">
-                  <% if (null != especialidades) { %>
-                    <% for (Especialidade especialidade : especialidades) { %>
+              <label for="id_cliente">Cliente</label>
+              <select class="form-control" name="id_cliente" id="id_cliente">
+                  <% if (null != clientes) { %>
+                    <% for (Cliente cliente : clientes) { %>
                     <% 
                     String selected = "";
-                    if (null != medico && medico.getIdEspecialidade() == especialidade.getId()) 
+                    if (null != agendamento && agendamento.getIdCliente() == cliente.getId()) 
                         selected = "selected";
                     %>
 
-                    <option value="<%=especialidade.getId()%>" <%=selected%>><%=especialidade.getDescricao()%></option>
+                    <option value="<%=cliente.getId()%>" <%=selected%>><%=cliente.getPessoa().getNome()%> - <%=cliente.getPessoa().getCpfHtml()%></option>
                     <% } %>
                   <% } %>
               </select>
             </div>
-            <input type="hidden" name="id" value="<%= (null == medico) ? "" : medico.getId()%>">
-            <input type="hidden" name="id_pessoa" value="<%= (null == pessoa) ? "" : pessoa.getId()%>">
             
+            <div class="form-group">
+              <label for="id_medico">Médico</label>
+              <select class="form-control" name="id_medico" id="id_medico">
+                  <% if (null != medicos) { %>
+                    <% for (Medico medico : medicos) { %>
+                    <% 
+                    String selected = "";
+                    if (null != agendamento && agendamento.getIdMedico() == medico.getId()) 
+                        selected = "selected";
+                    %>
+                    <option value="<%=medico.getId()%>" <%=selected%>><%=medico.getPessoa().getNome()%> - <%=medico.getEspecialidade().getDescricao()%></option>
+                    <% } %>
+                  <% } %>
+              </select>
+            </div>
+              
+            <div class="form-group">
+              <label for="nome">Data Consulta</label>
+              <input type="text" class="form-control" name="data_consulta" id="data_consulta" placeholder="dd/mm/yyyy hh:mi " value="<%= (null == agendamento) ? "" : agendamento.getDataConsulta()%>">
+            </div>
+
+            <input type="hidden" name="id" value="<%= (null == agendamento) ? "" : agendamento.getId()%>">            
             <button type="submit" class="btn btn-success">Salvar</button>
         </form>
     </div>
