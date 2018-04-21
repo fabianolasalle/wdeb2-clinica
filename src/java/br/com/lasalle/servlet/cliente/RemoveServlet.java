@@ -5,8 +5,10 @@
  */
 package br.com.lasalle.servlet.cliente;
 
+import br.com.lasalle.classes.Cliente;
 import br.com.lasalle.servlet.medico.*;
 import br.com.lasalle.classes.Medico;
+import br.com.lasalle.jdbc.ClienteDAO;
 import br.com.lasalle.servlet.especialidade.*;
 import br.com.lasalle.jdbc.EspecialidadeDAO;
 import br.com.lasalle.jdbc.MedicoDAO;
@@ -60,10 +62,10 @@ public class RemoveServlet extends HttpServlet {
             throws ServletException, IOException {
         
         PessoaDAO pessoaDao = null;
-        MedicoDAO medicoDao = null;
+        ClienteDAO clienteDao = null;
         try {
             pessoaDao = new PessoaDAO();
-            medicoDao = new MedicoDAO();
+            clienteDao = new ClienteDAO();
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(SaveServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -72,9 +74,9 @@ public class RemoveServlet extends HttpServlet {
         boolean resultOperation = false;
         if (id.length() >= 1) {
             try {
-                Medico medico = medicoDao.getSingle(Long.parseLong(id));
-                resultOperation = medicoDao.remove(Long.parseLong(id));
-                pessoaDao.remove(medico.getIdPessoa());
+                Cliente cliente = clienteDao.getSingle(Long.parseLong(id));
+                resultOperation = clienteDao.remove(Long.parseLong(id));
+                pessoaDao.remove(cliente.getIdPessoa());
             } catch (SQLException ex) {
                 Logger.getLogger(RemoveServlet.class.getName()).log(Level.SEVERE, null, ex);
             } catch (ClassNotFoundException ex) {
@@ -83,7 +85,7 @@ public class RemoveServlet extends HttpServlet {
         }
         
         if (resultOperation) {
-            response.sendRedirect("medico");
+            response.sendRedirect("cliente");
             return;
         }
     }

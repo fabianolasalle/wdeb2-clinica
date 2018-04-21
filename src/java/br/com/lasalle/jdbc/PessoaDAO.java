@@ -66,7 +66,7 @@ public class PessoaDAO extends DefaultDAO {
                 + "endereco = ?, "
                 + "email = ?, "
                 + "cpf = ?, "
-                + "rg = ?, "
+                + "rg = ? "
                 + "WHERE id = ?";
         PreparedStatement stmt = this.getConnection().prepareStatement(sql);
         stmt.setString(1, pessoa.getNome());

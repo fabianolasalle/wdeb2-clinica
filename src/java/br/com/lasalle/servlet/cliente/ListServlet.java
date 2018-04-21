@@ -5,10 +5,12 @@
  */
 package br.com.lasalle.servlet.cliente;
 
+import br.com.lasalle.classes.Cliente;
 import br.com.lasalle.servlet.medico.*;
 import br.com.lasalle.servlet.especialidade.*;
 import br.com.lasalle.classes.Especialidade;
 import br.com.lasalle.classes.Medico;
+import br.com.lasalle.jdbc.ClienteDAO;
 import br.com.lasalle.jdbc.EspecialidadeDAO;
 import br.com.lasalle.jdbc.MedicoDAO;
 import java.io.IOException;
@@ -61,10 +63,10 @@ public class ListServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        List<Medico> data = new ArrayList<Medico>();
+        List<Cliente> data = new ArrayList<Cliente>();
         try {
             // TODO: Adicionar DAO e obter listagem da base
-            MedicoDAO dao = new MedicoDAO();
+            ClienteDAO dao = new ClienteDAO();
             data = dao.getAll();
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(ListServlet.class.getName()).log(Level.SEVERE, null, ex);
@@ -73,7 +75,7 @@ public class ListServlet extends HttpServlet {
         }
         
         request.setAttribute("listData", data);
-        request.setAttribute("contentPath", "./medico/list.jsp");
+        request.setAttribute("contentPath", "./cliente/list.jsp");
         processRequest(request, response);
     }
 

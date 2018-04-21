@@ -22,6 +22,5 @@ public class DefaultDAO {
 
     public Connection getConnection() {
         return connection;
-    }
-   
+    }   
 }

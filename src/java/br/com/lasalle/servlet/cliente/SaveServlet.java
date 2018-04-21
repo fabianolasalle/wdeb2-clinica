@@ -5,11 +5,13 @@
  */
 package br.com.lasalle.servlet.cliente;
 
+import br.com.lasalle.classes.Cliente;
 import br.com.lasalle.servlet.medico.*;
 import br.com.lasalle.servlet.especialidade.*;
 import br.com.lasalle.classes.Especialidade;
 import br.com.lasalle.classes.Medico;
 import br.com.lasalle.classes.Pessoa;
+import br.com.lasalle.jdbc.ClienteDAO;
 import br.com.lasalle.jdbc.EspecialidadeDAO;
 import br.com.lasalle.jdbc.MedicoDAO;
 import br.com.lasalle.jdbc.PessoaDAO;
@@ -63,29 +65,18 @@ public class SaveServlet extends HttpServlet {
             throws ServletException, IOException {
         
         String id = request.getParameter("id");
-        Medico data = null;
-        MedicoDAO dao;
+        Cliente data = null;
+        ClienteDAO dao;
         
         if (null != id){
             try {
-                dao = new MedicoDAO();
+                dao = new ClienteDAO();
                 data = dao.getSingle(Long.parseLong(id));
             } catch (ClassNotFoundException ex) {
                 Logger.getLogger(SaveServlet.class.getName()).log(Level.SEVERE, null, ex);
             } catch (SQLException ex) {
                 Logger.getLogger(SaveServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }
-        
-        List<Especialidade> especialidades = null;
-        
-        try {            
-            EspecialidadeDAO especialidadeDao = new EspecialidadeDAO();
-            especialidades = especialidadeDao.getAll();
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(SaveServlet.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
-            Logger.getLogger(SaveServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         PessoaDAO pessoaDao = null;
@@ -103,10 +94,9 @@ public class SaveServlet extends HttpServlet {
         
                     
         request.setAttribute("data", data);
-        request.setAttribute("especialidade-data", especialidades);
         request.setAttribute("pessoa-data", pessoa);
         
-        request.setAttribute("contentPath", "./medico/save.jsp");
+        request.setAttribute("contentPath", "./cliente/save.jsp");
         processRequest(request, response);
     }
 
@@ -123,10 +113,10 @@ public class SaveServlet extends HttpServlet {
             throws ServletException, IOException {
         
         PessoaDAO pessoaDao = null;
-        MedicoDAO medicoDao = null;
+        ClienteDAO clienteDao = null;
         try {
             pessoaDao = new PessoaDAO();
-            medicoDao = new MedicoDAO();
+            clienteDao = new ClienteDAO();
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(SaveServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -135,7 +125,7 @@ public class SaveServlet extends HttpServlet {
         String id_pessoa = request.getParameter("id_pessoa");
         
         long insertedIdPessoa = 0;
-        long insertedIdMedico = 0;
+        long insertedIdCliente = 0;
         boolean resultOperation = false;
         
         if (id.length() < 1) {
@@ -148,29 +138,29 @@ public class SaveServlet extends HttpServlet {
             }
             
             if (insertedIdPessoa > 0){
-                Medico medico = new Medico(request);
-                medico.setIdPessoa(insertedIdPessoa);
+                Cliente cliente = new Cliente(request);
+                cliente.setIdPessoa(insertedIdPessoa);
                 try {
-                    insertedIdMedico = medicoDao.insert(medico);
+                    insertedIdCliente = clienteDao.insert(cliente);
                 } catch (SQLException ex) {
                     Logger.getLogger(SaveServlet.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 
             }
             
-            resultOperation = insertedIdMedico > 0;
+            resultOperation = insertedIdCliente > 0;
         } else {
             Pessoa pessoa = null;
-            Medico medico = null;
+            Cliente cliente = null;
             try {
                 pessoa = pessoaDao.getSingle(Long.parseLong(id_pessoa));
-                medico = medicoDao.getSingle(Long.parseLong(id));
+                cliente = clienteDao.getSingle(Long.parseLong(id));
                 
                 pessoa.mapRequest(request);
-                medico.mapRequest(request);
+                cliente.mapRequest(request);
                 
                 pessoaDao.update(pessoa);
-                resultOperation = medicoDao.update(medico);
+                resultOperation = clienteDao.update(cliente);
             } catch (ClassNotFoundException ex) {
                 Logger.getLogger(SaveServlet.class.getName()).log(Level.SEVERE, null, ex);
             } catch (SQLException ex) {
@@ -179,7 +169,7 @@ public class SaveServlet extends HttpServlet {
         } 
         
         if (resultOperation) {
-            response.sendRedirect("medico");
+            response.sendRedirect("cliente");
             return;
         }
         

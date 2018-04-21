@@ -5,6 +5,10 @@
  */
 package br.com.lasalle.classes;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.servlet.http.HttpServletRequest;
+
 /**
  *
  * @author 201760192
@@ -15,6 +19,26 @@ public class Cliente {
     public Long idPessoa;
     public Pessoa pessoa;
 
+    public Cliente(ResultSet rs) throws SQLException
+    {
+        this.id = rs.getLong("id");
+        this.idPessoa = rs.getLong("id_pessoa");
+    }
+    
+    public Cliente(HttpServletRequest request)
+    {            
+    }
+    
+    public void mapRequest(HttpServletRequest request)
+    {
+        this.idPessoa = Long.parseLong(request.getParameter("id_pessoa"));
+    }
+        
+    public Cliente()
+    {
+        
+    }
+    
     public Long getId() {
         return id;
     }

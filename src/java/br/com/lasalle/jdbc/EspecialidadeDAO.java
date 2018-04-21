@@ -73,6 +73,8 @@ public class EspecialidadeDAO extends DefaultDAO {
         PreparedStatement stmt = this.getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
         stmt.setString(1, especialidade.getDescricao());
         
+        int result = stmt.executeUpdate();
+        
         long insertedIdResult = 0l;
         ResultSet rs = stmt.getGeneratedKeys();
         if (rs.next()){

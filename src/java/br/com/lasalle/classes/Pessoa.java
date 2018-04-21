@@ -22,22 +22,6 @@ public class Pessoa {
     public String cpf;
     public String rg;
 
-    public String getCpf() {
-        return cpf;
-    }
-
-    public void setCpf(String cpf) {
-        this.cpf = cpf;
-    }
-
-    public String getRg() {
-        return rg;
-    }
-
-    public void setRg(String rg) {
-        this.rg = rg;
-    }
-
     public Pessoa(ResultSet rs) throws SQLException
     {
         this.id = rs.getLong("id");
@@ -45,6 +29,8 @@ public class Pessoa {
         this.telefone = rs.getString("telefone");
         this.endereco = rs.getString("endereco");
         this.email = rs.getString("email");
+        this.cpf = rs.getString("cpf");
+        this.rg = rs.getString("rg");
     }
     
     public Pessoa(HttpServletRequest request)
@@ -63,6 +49,8 @@ public class Pessoa {
         this.telefone = request.getParameter("telefone");
         this.endereco = request.getParameter("endereco");
         this.email = request.getParameter("email");
+        this.cpf = request.getParameter("cpf");
+        this.rg = request.getParameter("rg");
     }
         
     public Long getId() {
@@ -104,6 +92,34 @@ public class Pessoa {
     public void setEmail(String email) {
         this.email = email;
     }
+
+    public String getCpf() {
+        return cpf;
+    }
     
+    public String getCpfHtml() {
+        if (null == this.cpf){
+            return "";
+        }
+        return this.cpf;
+    }
+
+    public void setCpf(String cpf) {
+        this.cpf = cpf;
+    }
+
+    public String getRg() {
+        return rg;
+    }
     
+    public String getRgHtml() {
+        if (null == this.rg){
+            return "";
+        }
+        return this.rg;
+    }
+
+    public void setRg(String rg) {
+        this.rg = rg;
+    }    
 }

@@ -5,6 +5,7 @@
  */
 package br.com.lasalle.jdbc;
 
+import br.com.lasalle.classes.Cliente;
 import br.com.lasalle.classes.Medico;
 import br.com.lasalle.classes.Pessoa;
 import java.sql.PreparedStatement;
@@ -26,15 +27,19 @@ public class ClienteDAO extends DefaultDAO {
         super();
     }
     
-    public List<Pessoa> getAll() throws SQLException
+    public List<Cliente> getAll() throws SQLException, ClassNotFoundException
     {
         String sql = "SELECT * FROM " + this.tablename;
-        List<Pessoa> data = new ArrayList<Pessoa>();
+        List<Cliente> data = new ArrayList<Cliente>();
         PreparedStatement stmt = this.getConnection().prepareStatement(sql);
         ResultSet resultSet = stmt.executeQuery();
         
         while (resultSet.next()) {
-            Pessoa entity = new Pessoa(resultSet);
+            Cliente entity = new Cliente(resultSet);
+            
+            PessoaDAO pessoaDao = new PessoaDAO();
+            entity.setPessoa(pessoaDao.getSingle(entity.getIdPessoa()));
+            
             data.add(entity);
         }
         resultSet.close();
@@ -43,51 +48,37 @@ public class ClienteDAO extends DefaultDAO {
         return data;
     }
     
-    public Pessoa getSingle(Long id) throws SQLException
+    public Cliente getSingle(Long id) throws SQLException, ClassNotFoundException
     {
         String sql = "SELECT * FROM " + this.tablename + " WHERE id = ?";
         PreparedStatement stmt = this.getConnection().prepareStatement(sql);
         stmt.setLong(1, id);
         ResultSet resultSet = stmt.executeQuery();
-        Pessoa entity = null;
+        Cliente entity = null;
         
         while (resultSet.next()) {
-            entity = new Pessoa(resultSet);
+            entity = new Cliente(resultSet);
+            
+            PessoaDAO pessoaDao = new PessoaDAO();
+            entity.setPessoa(pessoaDao.getSingle(entity.getIdPessoa()));
         }
         
         return entity;
     }
     
-    public boolean update(Pessoa pessoa) throws SQLException
+    public boolean update(Cliente cliente) throws SQLException
     {
-        String sql = "UPDATE " + this.tablename + " SET "
-                + "nome = ?, "
-                + "telefone = ?, "
-                + "endereco = ?, "
-                + "email = ? "
-                + "WHERE id = ?";
-        PreparedStatement stmt = this.getConnection().prepareStatement(sql);
-        stmt.setString(1, pessoa.getNome());
-        stmt.setString(2, pessoa.getTelefone());
-        stmt.setString(3, pessoa.getEndereco());
-        stmt.setString(4, pessoa.getEmail());
-        stmt.setLong(5, pessoa.getId());
-        
-        int result = stmt.executeUpdate();
-        stmt.close();
-        
-        return result == 1;
+        return true;
     }
     
-    public long insert(Pessoa pessoa) throws SQLException
+    public long insert(Cliente cliente) throws SQLException
     {
-        String sql = "INSERT INTO " + this.tablename + " (nome, telefone, endereco, email) "
-                + "VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO " + this.tablename + " (id_pessoa) "
+                + "VALUES (?)";
         PreparedStatement stmt = this.getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-        stmt.setString(1, pessoa.getNome());
-        stmt.setString(2, pessoa.getTelefone());
-        stmt.setString(3, pessoa.getEndereco());
-        stmt.setString(4, pessoa.getEmail());
+        stmt.setLong(1, cliente.getIdPessoa());
+        
+        int result = stmt.executeUpdate();
         
         long insertedIdResult = 0l;
         ResultSet rs = stmt.getGeneratedKeys();

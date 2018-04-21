@@ -23,15 +23,15 @@
             </div>
             <div class="form-group">
               <label for="email">E-mail</label>
-              <input type="email" class="form-control" name="email" id="email" placeholder="email@dominio.com.br" value="<%= (null == medico) ? "" : pessoa.getEmail()%>">
+              <input type="email" class="form-control" name="email" id="email" placeholder="email@dominio.com.br" value="<%= (null == pessoa) ? "" : pessoa.getEmail()%>">
             </div>
             <div class="form-group">
               <label for="cpf">CPF</label>
-              <input type="text" class="form-control" name="cpf" id="cpf" placeholder="CPF" maxlength="11" value="<%= (null == pessoa) ? "" : pessoa.getCpf()%>">
+              <input type="text" class="form-control" name="cpf" id="cpf" placeholder="CPF" maxlength="11" value="<%= (null == pessoa) ? "" : pessoa.getCpfHtml()%>">
             </div>
             <div class="form-group">
               <label for="rg">RG</label>
-              <input type="text" class="form-control" name="rg" id="rg" placeholder="RG" maxlength="10" value="<%= (null == pessoa) ? "" : pessoa.getRg()%>">
+              <input type="text" class="form-control" name="rg" id="rg" placeholder="RG" maxlength="10" value="<%= (null == pessoa) ? "" : pessoa.getRgHtml()%>">
             </div>
             <div class="form-group">
               <label for="crm">CRM</label>
