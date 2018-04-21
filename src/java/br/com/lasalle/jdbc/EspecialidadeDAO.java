@@ -5,7 +5,6 @@
  */
 package br.com.lasalle.jdbc;
 
-import br.com.lasalle.classes.Contato;
 import br.com.lasalle.classes.Especialidade;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
