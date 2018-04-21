@@ -12,10 +12,10 @@
         <a class="nav-link" href="#"> Clientes </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="especialidade"> Especialidades </a>
+        <a class="nav-link" href="http://localhost:8080/WebApplication1/especialidade"> Especialidades </a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#"> Médico </a>
+        <a class="nav-link" href="http://localhost:8080/WebApplication1/medico"> Médico </a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="#"> Pessoas </a>

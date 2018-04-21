@@ -2,6 +2,7 @@ package br.com.lasalle.classes;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import javax.servlet.http.HttpServletRequest;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -24,6 +25,24 @@ public class Medico {
     public String horarioInicial;
     public String horarioFinal;
     public String rg;
+    public Pessoa pessoa;
+    public Especialidade especialidade;
+
+    public Pessoa getPessoa() {
+        return pessoa;
+    }
+
+    public Especialidade getEspecialidade() {
+        return especialidade;
+    }
+
+    public void setEspecialidade(Especialidade especialidade) {
+        this.especialidade = especialidade;
+    }
+
+    public void setPessoa(Pessoa pessoa) {
+        this.pessoa = pessoa;
+    }
 
     public Medico(ResultSet rs) throws SQLException
     {
@@ -33,13 +52,28 @@ public class Medico {
         this.crm = rs.getString("crm");
         this.idEspecialidade = rs.getLong("id_especialidade");
         this.horarioInicial = rs.getString("horario_inicial");
-        this.horarioFinal = rs.getString("horaro_final");
+        this.horarioFinal = rs.getString("horario_inicial");
         this.rg = rs.getString("rg");
+    }
+    
+    public Medico(HttpServletRequest request)
+    {            
+        this.mapRequest(request);
     }
     
     public Medico()
     {
         
+    }
+    
+    public void mapRequest(HttpServletRequest request)
+    {
+        this.cpf = request.getParameter("cpf");
+        this.crm = request.getParameter("crm");
+        this.idEspecialidade = Long.parseLong(request.getParameter("id_especialidade"));
+        this.horarioInicial = request.getParameter("horario_inicial");
+        this.horarioFinal = request.getParameter("horario_final");
+        this.rg = request.getParameter("rg");
     }
         
     public Long getId() {
@@ -85,6 +119,13 @@ public class Medico {
     public String getHorarioInicial() {
         return horarioInicial;
     }
+    
+    public String getHorarioInicialHtml() {
+        if (null == this.horarioInicial){
+            return "";
+        }
+        return this.horarioInicial;
+    }
 
     public void setHorarioInicial(String horarioInicial) {
         this.horarioInicial = horarioInicial;
@@ -92,6 +133,13 @@ public class Medico {
 
     public String getHorarioFinal() {
         return horarioFinal;
+    }
+    
+    public String getHorarioFinalHtml() {
+        if (null == this.horarioFinal){
+            return "";
+        }
+        return this.horarioFinal;
     }
 
     public void setHorarioFinal(String horarioFinal) {

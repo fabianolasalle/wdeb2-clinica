@@ -10,6 +10,7 @@ import br.com.lasalle.classes.Especialidade;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,11 +40,11 @@ public class EspecialidadeDAO extends DefaultDAO {
         return data;
     }
     
-    public Especialidade getSingle(int id) throws SQLException
+    public Especialidade getSingle(long id) throws SQLException
     {
         String sql = "SELECT * FROM especialidade WHERE id = ?";
         PreparedStatement stmt = this.getConnection().prepareStatement(sql);
-        stmt.setInt(1, id);
+        stmt.setLong(1, id);
         ResultSet resultSet = stmt.executeQuery();
         Especialidade especialidade = null;
         
@@ -66,15 +67,20 @@ public class EspecialidadeDAO extends DefaultDAO {
         return result == 1;
     }
     
-    public boolean insert(Especialidade especialidade) throws SQLException
+    public long insert(Especialidade especialidade) throws SQLException
     {
         String sql = "INSERT INTO especialidade (descricao) VALUES (?)";
-        PreparedStatement stmt = this.getConnection().prepareStatement(sql);
+        PreparedStatement stmt = this.getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
         stmt.setString(1, especialidade.getDescricao());
-        int result = stmt.executeUpdate();
+        
+        long insertedIdResult = 0l;
+        ResultSet rs = stmt.getGeneratedKeys();
+        if (rs.next()){
+            insertedIdResult = rs.getInt(1);
+        }
         stmt.close();
         
-        return result == 1;
+        return insertedIdResult;
     }
     
     public boolean remove(int id) throws SQLException

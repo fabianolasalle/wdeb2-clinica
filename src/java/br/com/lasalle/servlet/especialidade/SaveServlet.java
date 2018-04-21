@@ -62,7 +62,7 @@ public class SaveServlet extends HttpServlet {
         if (null != id){
             try {
                 dao = new EspecialidadeDAO();
-                data = dao.getSingle(Integer.parseInt(id));
+                data = dao.getSingle(Long.parseLong(id));
             } catch (ClassNotFoundException ex) {
                 Logger.getLogger(SaveServlet.class.getName()).log(Level.SEVERE, null, ex);
             } catch (SQLException ex) {
@@ -95,17 +95,19 @@ public class SaveServlet extends HttpServlet {
         }
                 
         String id = request.getParameter("id");
+        long idInserted = 0;
         boolean resultOperation = false;
         if (id.length() < 1) {
             // TODO: Insert
             Especialidade especialidade = new Especialidade();
             especialidade.setDescricao(request.getParameter("descricao"));
             try {
-                resultOperation = dao.insert(especialidade);
+                idInserted = dao.insert(especialidade);
             } catch (SQLException ex) {
                 Logger.getLogger(SaveServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
             
+            resultOperation = idInserted > 0;
         } else {           
             Especialidade especialidade = null;
             try {

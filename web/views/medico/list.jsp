@@ -1,9 +1,9 @@
+<%@page import="br.com.lasalle.classes.Medico"%>
 <%@page import="java.util.ArrayList"%>
-<%@page import="br.com.lasalle.classes.Especialidade"%>
-<% ArrayList<Especialidade> especialidades = (ArrayList)request.getAttribute("listData"); %>
+<% ArrayList<Medico> medicos = (ArrayList)request.getAttribute("listData"); %>
 <div class="row mb-3">
     <div class="col">
-        <a href="especialidade-save" class="btn btn-success"><i class="fas fa-plus-square"></i> Adicionar</a>
+        <a href="medico-save" class="btn btn-success"><i class="fas fa-plus-square"></i> Adicionar</a>
     </div>
 </div>
 
@@ -16,16 +16,19 @@
                 <th>Nome</th>
                 <th>CRM</th>
                 <th>Especialidade</th>
+                <th>Ações</th>
               </tr>
             </thead>
             <tbody>
-            <% for (Especialidade especialidade : especialidades) { %>
+            <% for (Medico medico : medicos) { %>
                 <tr>
-                    <td><%=especialidade.getId()%></td>
-                    <td><%=especialidade.getDescricao()%></td>
+                    <td><%=medico.getId()%></td>
+                    <td><%=medico.getPessoa().getNome()%></td>
+                    <td><%=medico.getCrm()%></td>
+                    <td><%=medico.getEspecialidade().getDescricao()%></td>
                     <td>
-                        <a href="especialidade-save?id=<%=especialidade.getId()%>"><button class="btn btn-sm btn-primary"><i class="fas fa-edit"></i></button></a>
-                        <a href="especialidade-remove?id=<%=especialidade.getId()%>"><button class="btn btn-sm btn-danger"><i class="fas fa-times"></i></button></a>
+                        <a href="medico-save?id=<%=medico.getId()%>"><button class="btn btn-sm btn-primary"><i class="fas fa-edit"></i></button></a>
+                        <a href="medico-remove?id=<%=medico.getId()%>"><button class="btn btn-sm btn-danger"><i class="fas fa-times"></i></button></a>
                     </td>
                 </tr>
             <% } %>

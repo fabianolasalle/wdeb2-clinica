@@ -7,10 +7,15 @@ package br.com.lasalle.servlet.medico;
 
 import br.com.lasalle.servlet.especialidade.*;
 import br.com.lasalle.classes.Especialidade;
+import br.com.lasalle.classes.Medico;
+import br.com.lasalle.classes.Pessoa;
 import br.com.lasalle.jdbc.EspecialidadeDAO;
+import br.com.lasalle.jdbc.MedicoDAO;
+import br.com.lasalle.jdbc.PessoaDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
@@ -24,7 +29,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author fabiano
  */
-@WebServlet("/especialidade-save")
+@WebServlet("/medico-save")
 public class SaveServlet extends HttpServlet {
 
     /**
@@ -57,13 +62,13 @@ public class SaveServlet extends HttpServlet {
             throws ServletException, IOException {
         
         String id = request.getParameter("id");
-        Especialidade data = null;
-        EspecialidadeDAO dao;
+        Medico data = null;
+        MedicoDAO dao;
         
         if (null != id){
             try {
-                dao = new EspecialidadeDAO();
-                data = dao.getSingle(Integer.parseInt(id));
+                dao = new MedicoDAO();
+                data = dao.getSingle(Long.parseLong(id));
             } catch (ClassNotFoundException ex) {
                 Logger.getLogger(SaveServlet.class.getName()).log(Level.SEVERE, null, ex);
             } catch (SQLException ex) {
@@ -71,8 +76,36 @@ public class SaveServlet extends HttpServlet {
             }
         }
         
+        List<Especialidade> especialidades = null;
+        
+        try {            
+            EspecialidadeDAO especialidadeDao = new EspecialidadeDAO();
+            especialidades = especialidadeDao.getAll();
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(SaveServlet.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(SaveServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        PessoaDAO pessoaDao = null;
+        Pessoa pessoa = null;
+        try {
+            pessoaDao = new PessoaDAO();
+            pessoa = pessoaDao.getSingle(data.getIdPessoa());
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(SaveServlet.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (NullPointerException ex) {
+            Logger.getLogger(SaveServlet.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(SaveServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+                    
         request.setAttribute("data", data);
-        request.setAttribute("contentPath", "./especialidade/save.jsp");
+        request.setAttribute("especialidade-data", especialidades);
+        request.setAttribute("pessoa-data", pessoa);
+        
+        request.setAttribute("contentPath", "./medico/save.jsp");
         processRequest(request, response);
     }
 
@@ -88,38 +121,64 @@ public class SaveServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        EspecialidadeDAO dao = null;
+        PessoaDAO pessoaDao = null;
+        MedicoDAO medicoDao = null;
         try {
-            dao = new EspecialidadeDAO();
+            pessoaDao = new PessoaDAO();
+            medicoDao = new MedicoDAO();
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(SaveServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
                 
         String id = request.getParameter("id");
+        String id_pessoa = request.getParameter("id_pessoa");
+        
+        long insertedIdPessoa = 0;
+        long insertedIdMedico = 0;
         boolean resultOperation = false;
+        
         if (id.length() < 1) {
-            // TODO: Insert
-            Especialidade especialidade = new Especialidade();
-            especialidade.setDescricao(request.getParameter("descricao"));
+            Pessoa pessoa = new Pessoa(request);
+            
             try {
-                resultOperation = dao.insert(especialidade);
+                insertedIdPessoa = pessoaDao.insert(pessoa);
             } catch (SQLException ex) {
                 Logger.getLogger(SaveServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
             
-        } else {           
-            Especialidade especialidade = null;
+            if (insertedIdPessoa > 0){
+                Medico medico = new Medico(request);
+                medico.setIdPessoa(insertedIdPessoa);
+                try {
+                    insertedIdMedico = medicoDao.insert(medico);
+                } catch (SQLException ex) {
+                    Logger.getLogger(SaveServlet.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
+            }
+            
+            resultOperation = insertedIdMedico > 0;
+        } else {
+            Pessoa pessoa = null;
+            Medico medico = null;
             try {
-                especialidade = dao.getSingle(Integer.parseInt(id));
-                especialidade.setDescricao(request.getParameter("descricao"));
-                resultOperation = dao.update(especialidade);
+                pessoa = pessoaDao.getSingle(Long.parseLong(id_pessoa));
+                medico = medicoDao.getSingle(Long.parseLong(id));
+                
+                pessoa.mapRequest(request);
+                medico.mapRequest(request);
+                
+                pessoaDao.update(pessoa);
+                resultOperation = medicoDao.update(medico);
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(SaveServlet.class.getName()).log(Level.SEVERE, null, ex);
             } catch (SQLException ex) {
                 Logger.getLogger(SaveServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
         } 
         
         if (resultOperation) {
-            response.sendRedirect("especialidade");
+            response.sendRedirect("medico");
             return;
         }
         

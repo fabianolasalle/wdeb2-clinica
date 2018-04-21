@@ -9,6 +9,7 @@ import br.com.lasalle.classes.Medico;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,11 +18,14 @@ import java.util.List;
  * @author fabiano
  */
 public class MedicoDAO extends DefaultDAO {
+    
+    public String tablename = "medico";
+    
     public MedicoDAO() throws ClassNotFoundException{
         super();
     }
     
-    public List<Medico> getAll() throws SQLException
+    public List<Medico> getAll() throws SQLException, ClassNotFoundException
     {
         String sql = "SELECT * FROM medico";
         List<Medico> data = new ArrayList<Medico>();
@@ -30,6 +34,13 @@ public class MedicoDAO extends DefaultDAO {
         
         while (resultSet.next()) {
             Medico entity = new Medico(resultSet);
+            
+            PessoaDAO pessoaDao = new PessoaDAO();
+            entity.setPessoa(pessoaDao.getSingle(entity.getIdPessoa()));
+            
+            EspecialidadeDAO especialidadeDao = new EspecialidadeDAO();
+            entity.setEspecialidade(especialidadeDao.getSingle(entity.getIdEspecialidade()));
+            
             data.add(entity);
         }
         resultSet.close();
@@ -38,16 +49,22 @@ public class MedicoDAO extends DefaultDAO {
         return data;
     }
     
-    public Medico getSingle(int id) throws SQLException
+    public Medico getSingle(Long id) throws SQLException, ClassNotFoundException
     {
-        String sql = "SELECT * FROM medico WHERE id = ?";
+        String sql = "SELECT * FROM " + this.tablename + " WHERE id = ?";
         PreparedStatement stmt = this.getConnection().prepareStatement(sql);
-        stmt.setInt(1, id);
+        stmt.setLong(1, id);
         ResultSet resultSet = stmt.executeQuery();
         Medico entity = null;
         
         while (resultSet.next()) {
             entity = new Medico(resultSet);
+            
+            PessoaDAO pessoaDao = new PessoaDAO();
+            entity.setPessoa(pessoaDao.getSingle(entity.getIdPessoa()));
+            
+            EspecialidadeDAO especialidadeDao = new EspecialidadeDAO();
+            entity.setEspecialidade(especialidadeDao.getSingle(entity.getIdEspecialidade()));
         }
         
         return entity;
@@ -55,11 +72,11 @@ public class MedicoDAO extends DefaultDAO {
     
     public boolean update(Medico medico) throws SQLException
     {
-        String sql = "UPDATE especialidade SET "
+        String sql = "UPDATE " + this.tablename + " SET "
                 + "cpf = ?, "
                 + "crm = ?, "
                 + "id_especialidade = ?, "
-                + "horario_incial = ?, "
+                + "horario_inicial = ?, "
                 + "horario_final = ?, "
                 + "rg = ? "
                 + "WHERE id = ?";
@@ -77,22 +94,34 @@ public class MedicoDAO extends DefaultDAO {
         return result == 1;
     }
     
-    public boolean insert(Medico medico) throws SQLException
+    public long insert(Medico medico) throws SQLException
     {
-        String sql = "INSERT INTO especialidade (id_pessoa, cpf, crm, id_especialidade, horario_inicial, horario_final, rg) VALUES (?)";
-        PreparedStatement stmt = this.getConnection().prepareStatement(sql);
-        stmt.setString(1, especialidade.getDescricao());
-        int result = stmt.executeUpdate();
+        String sql = "INSERT INTO " + this.tablename + " (id_pessoa, cpf, crm, id_especialidade, horario_inicial, horario_final, rg) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?)";
+        PreparedStatement stmt = this.getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+        stmt.setLong(1, medico.getIdPessoa());
+        stmt.setString(2, medico.getCpf());
+        stmt.setString(3, medico.getCrm());
+        stmt.setLong(4, medico.getIdEspecialidade());
+        stmt.setString(5, medico.getHorarioInicial());
+        stmt.setString(6, medico.getHorarioFinal());
+        stmt.setString(7, medico.getRg());
+        
+        long insertedIdResult = 0l;
+        ResultSet rs = stmt.getGeneratedKeys();
+        if (rs.next()){
+            insertedIdResult = rs.getInt(1);
+        }
         stmt.close();
         
-        return result == 1;
+        return insertedIdResult;
     }
     
-    public boolean remove(int id) throws SQLException
+    public boolean remove(long id) throws SQLException
     {
-        String sql = "DELETE FROM especialidade WHERE id = ?";
+        String sql = "DELETE FROM " + this.tablename + " WHERE id = ?";
         PreparedStatement stmt = this.getConnection().prepareStatement(sql);
-        stmt.setInt(1, id);
+        stmt.setLong(1, id);
         int result = stmt.executeUpdate();
         stmt.close();
         

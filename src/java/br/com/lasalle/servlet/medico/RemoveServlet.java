@@ -5,8 +5,11 @@
  */
 package br.com.lasalle.servlet.medico;
 
+import br.com.lasalle.classes.Medico;
 import br.com.lasalle.servlet.especialidade.*;
 import br.com.lasalle.jdbc.EspecialidadeDAO;
+import br.com.lasalle.jdbc.MedicoDAO;
+import br.com.lasalle.jdbc.PessoaDAO;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -23,7 +26,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author fabiano
  */
-@WebServlet("/especialidade-remove")
+@WebServlet("/medico-remove")
 public class RemoveServlet extends HttpServlet {
 
     /**
@@ -55,9 +58,11 @@ public class RemoveServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        EspecialidadeDAO dao = null;
+        PessoaDAO pessoaDao = null;
+        MedicoDAO medicoDao = null;
         try {
-            dao = new EspecialidadeDAO();
+            pessoaDao = new PessoaDAO();
+            medicoDao = new MedicoDAO();
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(SaveServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -66,14 +71,18 @@ public class RemoveServlet extends HttpServlet {
         boolean resultOperation = false;
         if (id.length() >= 1) {
             try {
-                resultOperation = dao.remove(Integer.parseInt(id));
+                Medico medico = medicoDao.getSingle(Long.parseLong(id));
+                resultOperation = medicoDao.remove(Long.parseLong(id));
+                pessoaDao.remove(medico.getIdPessoa());
             } catch (SQLException ex) {
+                Logger.getLogger(RemoveServlet.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ClassNotFoundException ex) {
                 Logger.getLogger(RemoveServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         
         if (resultOperation) {
-            response.sendRedirect("especialidade");
+            response.sendRedirect("medico");
             return;
         }
     }
