@@ -49,7 +49,7 @@ public class Medico implements ICrudEntity {
         this.crm = rs.getString("crm");
         this.idEspecialidade = rs.getLong("id_especialidade");
         this.horarioInicial = rs.getString("horario_inicial");
-        this.horarioFinal = rs.getString("horario_inicial");
+        this.horarioFinal = rs.getString("horario_final");
     }
     
     public Medico(HttpServletRequest request)

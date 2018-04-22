@@ -11,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -121,5 +122,26 @@ public class AgendamentoDAO extends DefaultDAO {
         stmt.close();
         
         return result == 1;
+    }
+    
+    
+    public boolean getIfExists(Agendamento agendamento) throws SQLException
+    {
+        String sql = "SELECT * FROM " + this.tablename + " WHERE data_consulta = ?"
+                + "AND id_medico = ? ";
+        List<Agendamento> data = new ArrayList<Agendamento>();
+        PreparedStatement stmt = this.getConnection().prepareStatement(sql);
+        stmt.setTimestamp(1, agendamento.getDataConsulta());
+        stmt.setLong(2, agendamento.getIdMedico());
+        ResultSet resultSet = stmt.executeQuery();
+        
+        while (resultSet.next()) {
+            Agendamento entity = new Agendamento(resultSet);
+            data.add(entity);
+        }
+        resultSet.close();
+        stmt.close();
+        
+        return data.size() > 0;
     }
 }

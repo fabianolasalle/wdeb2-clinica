@@ -7,10 +7,12 @@ package br.com.lasalle.servlet.agendamento;
 
 import br.com.lasalle.classes.Agendamento;
 import br.com.lasalle.classes.Cliente;
+import br.com.lasalle.classes.Error;
 import br.com.lasalle.servlet.medico.*;
 import br.com.lasalle.classes.Especialidade;
 import br.com.lasalle.classes.Medico;
 import br.com.lasalle.classes.Pessoa;
+import br.com.lasalle.classes.Uteis;
 import br.com.lasalle.jdbc.AgendamentoDAO;
 import br.com.lasalle.jdbc.ClienteDAO;
 import br.com.lasalle.jdbc.EspecialidadeDAO;
@@ -68,7 +70,7 @@ public class SaveServlet extends HttpServlet {
         Agendamento data = null;
         AgendamentoDAO dao;
         
-        if (null != id){
+        if (null != id && id.length() > 0){
             try {
                 dao = new AgendamentoDAO();
                 data = dao.getSingle(Long.parseLong(id));
@@ -127,28 +129,55 @@ public class SaveServlet extends HttpServlet {
             Logger.getLogger(SaveServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        // TODO: Validação Server-side de horário, independente se é uma inserçao
-        // ou edição, o horário deve estar em between do médico.
+        Agendamento agendamento = new Agendamento(request);
+        
+        try {
+            // TODO: Validação Server-side de horário, independente se é uma inserçao
+            // ou edição, o horário deve estar em between do médico.
+
+            MedicoDAO medicoDao = new MedicoDAO();
+            Medico medico = medicoDao.getSingle(Long.parseLong(request.getParameter("id_medico")));
+            
+            float appointmentSeconds = Uteis.DateTimeStringToSeconds(request.getParameter("data_consulta"));
+            float medicoShiftStartSeconds = Uteis.TimeToSeconds(medico.getHorarioInicial());
+            float medicoShiftEndSeconds = Uteis.TimeToSeconds(medico.getHorarioFinal());
+            
+            if (appointmentSeconds < medicoShiftStartSeconds || appointmentSeconds > medicoShiftEndSeconds){
+                request.setAttribute("error-time", Error.DoctorNotAvailable);
+                this.doGet(request, response);
+                return;
+            }
+            
+            // TODO: Validar se já existe uma consulta no horário com tempo de 15 minutos.
+            boolean existent = agendamentoDao.getIfExists(agendamento);
+            if (existent) {
+                request.setAttribute("error-time", Error.AppointmentTimeNotAvailable);
+                this.doGet(request, response);
+                return;
+            }
+            
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(SaveServlet.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(SaveServlet.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
 
         String id = request.getParameter("id");
         
         long insertedIdAgendamento = 0;
         boolean resultOperation = false;
         
-        if (id.length() < 1) {
-            Agendamento agendamento = new Agendamento(request);
-            
+        if (id.length() < 1) {           
             try {
                 insertedIdAgendamento = agendamentoDao.insert(agendamento);
             } catch (SQLException ex) {
                 Logger.getLogger(SaveServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
 
-
-            
             resultOperation = insertedIdAgendamento > 0;
         } else {
-            Agendamento agendamento = null;
+            agendamento = null;
             try {
                 agendamento = agendamentoDao.getSingle(Long.parseLong(id));
                 

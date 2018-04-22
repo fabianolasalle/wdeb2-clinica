@@ -26,5 +26,9 @@ public class DefaultDAO {
 
     public Connection getConnection() {
         return connection;
-    }   
+    }
+    
+    public void closeConnection() throws SQLException {
+        this.connection.close();
+    }
 }

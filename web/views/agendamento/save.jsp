@@ -5,6 +5,11 @@
 <% ArrayList<Cliente> clientes = (ArrayList<Cliente>) request.getAttribute("cliente-data"); %>
 <% ArrayList<Medico> medicos = (ArrayList<Medico>) request.getAttribute("medico-data"); %>
 <% Agendamento agendamento = (Agendamento) request.getAttribute("data"); %>
+
+<% String errorMedico = null; %>
+<% if (null != request.getAttribute("error-time")) { %>
+<%  errorMedico = request.getAttribute("error-time").toString(); %>
+<% } %>
 <div clas="row">
     <div class="col">
         <form method="POST" action="agendamento-save">
@@ -35,7 +40,7 @@
                     if (null != agendamento && agendamento.getIdMedico() == medico.getId()) 
                         selected = "selected";
                     %>
-                    <option value="<%=medico.getId()%>" <%=selected%>><%=medico.getPessoa().getNome()%> - <%=medico.getEspecialidade().getDescricao()%></option>
+                    <option value="<%=medico.getId()%>" <%=selected%>><%=medico.getPessoa().getNome()%> - <%=medico.getEspecialidade().getDescricao()%>: Das <%=medico.getHorarioInicialHtml()%> às <%=medico.getHorarioFinalHtml()%></option>
                     <% } %>
                   <% } %>
               </select>
@@ -44,6 +49,9 @@
             <div class="form-group">
               <label for="nome">Data Consulta</label>
               <input type="text" class="form-control" name="data_consulta" id="data_consulta" placeholder="dd/mm/yyyy hh:mi " value="<%= (null == agendamento) ? "" : agendamento.getDataConsultaHtml()%>">
+              <% if (null != errorMedico) { %>
+              <p class="alert alert-danger mt-3"><%= errorMedico %></p>
+              <% } %>
             </div>
 
             <input type="hidden" name="id" value="<%= (null == agendamento) ? "" : agendamento.getId()%>">            
