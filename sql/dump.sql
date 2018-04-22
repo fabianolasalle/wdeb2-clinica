@@ -2,7 +2,7 @@
 --
 -- Host: localhost    Database: webdevt1
 -- ------------------------------------------------------
--- Server version	5.7.21-0ubuntu0.16.04.1
+-- Server version	5.7.21-0ubuntu0.17.10.1
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -32,17 +32,8 @@ CREATE TABLE `agendamento` (
   KEY `id_medico` (`id_medico`),
   CONSTRAINT `agendamento_ibfk_1` FOREIGN KEY (`id_cliente`) REFERENCES `cliente` (`id`),
   CONSTRAINT `agendamento_ibfk_2` FOREIGN KEY (`id_medico`) REFERENCES `medico` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `agendamento`
---
-
-LOCK TABLES `agendamento` WRITE;
-/*!40000 ALTER TABLE `agendamento` DISABLE KEYS */;
-/*!40000 ALTER TABLE `agendamento` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `cliente`
@@ -54,22 +45,11 @@ DROP TABLE IF EXISTS `cliente`;
 CREATE TABLE `cliente` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `id_pessoa` int(11) NOT NULL,
-  `rg` varchar(10) DEFAULT NULL,
-  `cpf` varchar(11) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `id_pessoa` (`id_pessoa`),
   CONSTRAINT `cliente_ibfk_1` FOREIGN KEY (`id_pessoa`) REFERENCES `pessoa` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `cliente`
---
-
-LOCK TABLES `cliente` WRITE;
-/*!40000 ALTER TABLE `cliente` DISABLE KEYS */;
-/*!40000 ALTER TABLE `cliente` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `contatos`
@@ -89,15 +69,6 @@ CREATE TABLE `contatos` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `contatos`
---
-
-LOCK TABLES `contatos` WRITE;
-/*!40000 ALTER TABLE `contatos` DISABLE KEYS */;
-/*!40000 ALTER TABLE `contatos` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `especialidade`
 --
 
@@ -108,18 +79,8 @@ CREATE TABLE `especialidade` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `descricao` varchar(40) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `especialidade`
---
-
-LOCK TABLES `especialidade` WRITE;
-/*!40000 ALTER TABLE `especialidade` DISABLE KEYS */;
-INSERT INTO `especialidade` VALUES (1,'Especialidade 12');
-/*!40000 ALTER TABLE `especialidade` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `medico`
@@ -131,28 +92,17 @@ DROP TABLE IF EXISTS `medico`;
 CREATE TABLE `medico` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `id_pessoa` int(11) NOT NULL,
-  `cpf` varchar(11) DEFAULT NULL,
   `crm` varchar(20) DEFAULT NULL,
   `id_especialidade` int(11) NOT NULL,
   `horario_inicial` varchar(8) DEFAULT NULL,
   `horario_final` varchar(8) DEFAULT NULL,
-  `rg` varchar(10) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `id_pessoa` (`id_pessoa`),
   KEY `id_especialidade` (`id_especialidade`),
   CONSTRAINT `medico_ibfk_1` FOREIGN KEY (`id_pessoa`) REFERENCES `pessoa` (`id`),
   CONSTRAINT `medico_ibfk_2` FOREIGN KEY (`id_especialidade`) REFERENCES `especialidade` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `medico`
---
-
-LOCK TABLES `medico` WRITE;
-/*!40000 ALTER TABLE `medico` DISABLE KEYS */;
-/*!40000 ALTER TABLE `medico` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `pessoa`
@@ -167,18 +117,11 @@ CREATE TABLE `pessoa` (
   `telefone` varchar(14) DEFAULT NULL,
   `endereco` varchar(255) DEFAULT NULL,
   `email` varchar(50) DEFAULT NULL,
+  `rg` varchar(10) DEFAULT NULL,
+  `cpf` varchar(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `pessoa`
---
-
-LOCK TABLES `pessoa` WRITE;
-/*!40000 ALTER TABLE `pessoa` DISABLE KEYS */;
-/*!40000 ALTER TABLE `pessoa` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Dumping routines for database 'webdevt1'
@@ -193,4 +136,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-04-20 19:56:09
+-- Dump completed on 2018-04-22 14:20:47
