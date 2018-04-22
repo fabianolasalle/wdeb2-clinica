@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author fabiano
  */
-@WebServlet("/")
+@WebServlet("")
 public class IndexServlet extends HttpServlet {
 
     /**

@@ -1,1 +1,1 @@
-<h1>Foobar</h1>
+<h1>Selecione uma opção ao lado</h1>

@@ -15,7 +15,7 @@
         <form method="POST" action="agendamento-save">
             <div class="form-group">
               <label for="id_cliente">Cliente</label>
-              <select class="form-control" name="id_cliente" id="id_cliente">
+              <select class="form-control" name="id_cliente" id="id_cliente" required>
                   <% if (null != clientes) { %>
                     <% for (Cliente cliente : clientes) { %>
                     <% 
@@ -32,7 +32,7 @@
             
             <div class="form-group">
               <label for="id_medico">Médico</label>
-              <select class="form-control" name="id_medico" id="id_medico">
+              <select class="form-control" name="id_medico" id="id_medico" required>
                   <% if (null != medicos) { %>
                     <% for (Medico medico : medicos) { %>
                     <% 
@@ -48,7 +48,7 @@
               
             <div class="form-group">
               <label for="nome">Data Consulta</label>
-              <input type="text" class="form-control" name="data_consulta" id="data_consulta" placeholder="dd/mm/yyyy hh:mi " value="<%= (null == agendamento) ? "" : agendamento.getDataConsultaHtml()%>">
+              <input type="text" class="form-control" name="data_consulta" id="data_consulta" placeholder="dd/mm/yyyy hh:mi " value="<%= (null == agendamento) ? "" : agendamento.getDataConsultaHtml()%>" required>
               <% if (null != errorMedico) { %>
               <p class="alert alert-danger mt-3"><%= errorMedico %></p>
               <% } %>
@@ -59,3 +59,9 @@
         </form>
     </div>
 </div>
+            
+<script>
+    $(document).ready(function(){
+        $("#data_consulta").mask('00/00/0000 00:00');
+    });
+</script>
