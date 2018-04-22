@@ -6,10 +6,7 @@
 package br.com.lasalle.servlet.agendamento;
 
 import br.com.lasalle.classes.Agendamento;
-import br.com.lasalle.servlet.medico.*;
-import br.com.lasalle.classes.Medico;
 import br.com.lasalle.jdbc.AgendamentoDAO;
-import br.com.lasalle.jdbc.MedicoDAO;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;

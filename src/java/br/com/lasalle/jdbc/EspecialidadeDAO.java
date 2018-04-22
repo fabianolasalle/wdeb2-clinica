@@ -6,7 +6,6 @@
 package br.com.lasalle.jdbc;
 
 import br.com.lasalle.classes.Especialidade;
-import br.com.lasalle.classes.ICrudEntity;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
